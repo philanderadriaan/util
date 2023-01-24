@@ -12,51 +12,50 @@ public class Audio
     if (file == null)
     {
       Thread.sleep(elapsed);
-      return 1;
+      return 0;
     }
     Clip clip = AudioSystem.getClip();
     clip.open(AudioSystem.getAudioInputStream(file));
     clip.start();
     while (!clip.isRunning())
     {
-      Thread.sleep(100);
+      Thread.sleep(1);
     }
     long start = System.currentTimeMillis();
     while (clip.isRunning())
     {
-      Thread.sleep(100);
+      Thread.sleep(1);
     }
     long finish = System.currentTimeMillis();
     while (System.currentTimeMillis() - start < elapsed)
     {
-      Thread.sleep(100);
+      Thread.sleep(1);
     }
     clip.close();
     return finish - start;
   }
 
-  public static void playList(File... files)
+  public static void play(File... files)
   {
     new Thread(() -> {
-      long elapsed = 1;
+      long elapsed = 0;
       for (File file : files)
       {
         try
         {
           elapsed = play(file, elapsed);
         }
-        catch (Throwable e)
+        catch (Exception e)
         {
           e.printStackTrace();
         }
       }
-
     }).start();
   }
 
   public static void flush()
   {
-    playList(new File("../common/flush.wav"));
+    play(new File("../common/flush.wav"));
   }
 
 }
