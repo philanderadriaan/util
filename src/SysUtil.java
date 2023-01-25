@@ -1,8 +1,8 @@
-public class SystemUtility
+public class SysUtil
 {
   public static void exit() throws Exception
   {
-    AudioUtility.flush();
+    WavUtil.flush();
     System.exit(0);
   }
 }

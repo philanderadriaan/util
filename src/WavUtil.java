@@ -12,10 +12,10 @@ import java.util.Map.Entry;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
-public class AudioUtility
+public class WavUtil
 {
   private static final Map<String, File[]> FILE_MAP = new HashMap<String, File[]>();
-  private static final Map<String, String> PREVIOUS_FILE_MAP = new HashMap<String, String>();
+  private static final Map<String, String> PREV_FILE_MAP = new HashMap<String, String>();
   private static Entry<String, List<File>> fileEntry =
       new SimpleEntry<String, List<File>>("", new ArrayList<File>());
   private static long cooldown = 1;
@@ -73,36 +73,36 @@ public class AudioUtility
     play(new File("../utility/flush.wav"));
   }
 
-  public static void putDirectory(File directory)
+  public static void putDirectory(File dir)
   {
-    if (PREVIOUS_FILE_MAP.size() == 0)
+    if (PREV_FILE_MAP.isEmpty())
     {
-      PREVIOUS_FILE_MAP.put("", "");
+      PREV_FILE_MAP.put("", "");
     }
-    FILE_MAP.put(directory.getName(), directory.listFiles());
+    FILE_MAP.put(dir.getName(), dir.listFiles());
   }
 
-  public static void playDirectory(String directoryName) throws Exception
+  public static void playDirectory(String dirName) throws Exception
   {
-    if (directoryName == null)
+    if (dirName == null)
     {
       play(null);
     }
     else
     {
-      if (!fileEntry.getKey().equalsIgnoreCase(directoryName) ||
-          fileEntry.getValue().size() == 0)
+      if (!fileEntry.getKey().equalsIgnoreCase(dirName) ||
+          fileEntry.getValue().isEmpty())
       {
         List<File> fileList = new ArrayList<File>();
-        fileList.addAll(Arrays.asList(FILE_MAP.get(directoryName)));
+        fileList.addAll(Arrays.asList(FILE_MAP.get(dirName)));
         Collections.shuffle(fileList);
         if (fileList.get(0).getAbsolutePath()
-            .equalsIgnoreCase(PREVIOUS_FILE_MAP.get(directoryName)))
+            .equalsIgnoreCase(PREV_FILE_MAP.get(dirName)))
         {
           fileList.remove(0);
         }
-        fileEntry = new SimpleEntry<String, List<File>>(directoryName, fileList);
-        PREVIOUS_FILE_MAP.put(directoryName, fileEntry.getValue().get(0).getAbsolutePath());
+        fileEntry = new SimpleEntry<String, List<File>>(dirName, fileList);
+        PREV_FILE_MAP.put(dirName, fileEntry.getValue().get(0).getAbsolutePath());
       }
       play(fileEntry.getValue().remove(0));
     }
