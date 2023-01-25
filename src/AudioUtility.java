@@ -68,9 +68,9 @@ public class AudioUtility
     }).start();
   }
 
-  public static void flush()
+  public static void flush() throws Exception
   {
-    playBackground(new File("../common/flush.wav"));
+    play(new File("../utility/flush.wav"));
   }
 
   public static void putDirectory(File directory)
