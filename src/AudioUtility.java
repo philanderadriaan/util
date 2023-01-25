@@ -46,8 +46,8 @@ public class AudioUtility
       {
         Thread.sleep(1);
       }
-      clip.close();
       cooldown = finish - start;
+      clip.close();
     }
   }
 
