@@ -70,7 +70,7 @@ public class WavUtil
 
   public static void flush() throws Exception
   {
-    play(new File("../utility/flush.wav"));
+    play(new File("../util/flush.wav"));
   }
 
   public static void putDirectory(File dir)
