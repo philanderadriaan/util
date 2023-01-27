@@ -1,5 +1,6 @@
 
 import java.io.File;
+import java.io.IOException;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,6 +12,8 @@ import java.util.Map.Entry;
 
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class WavUtil
 {
@@ -20,7 +23,8 @@ public class WavUtil
       new SimpleEntry<String, List<File>>("", new ArrayList<File>());
   private static long cooldown = 1;
 
-  public static void play(File file) throws Exception
+  public static void play(File file) throws InterruptedException, LineUnavailableException,
+      IOException, UnsupportedAudioFileException
   {
     if (file == null)
     {
@@ -68,7 +72,8 @@ public class WavUtil
     }).start();
   }
 
-  public static void flush() throws Exception
+  public static void flush() throws InterruptedException, LineUnavailableException,
+      IOException, UnsupportedAudioFileException
   {
     play(new File("../util/flush.wav"));
   }
@@ -90,14 +95,12 @@ public class WavUtil
     }
     else
     {
-      if (!fileEntry.getKey().equalsIgnoreCase(dirName) ||
-          fileEntry.getValue().isEmpty())
+      if (!fileEntry.getKey().equalsIgnoreCase(dirName) || fileEntry.getValue().isEmpty())
       {
         List<File> fileList = new ArrayList<File>();
         fileList.addAll(Arrays.asList(FILE_MAP.get(dirName)));
         Collections.shuffle(fileList);
-        if (fileList.get(0).getAbsolutePath()
-            .equalsIgnoreCase(PREV_FILE_MAP.get(dirName)))
+        if (fileList.get(0).getAbsolutePath().equalsIgnoreCase(PREV_FILE_MAP.get(dirName)))
         {
           fileList.remove(0);
         }
